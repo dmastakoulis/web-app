@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.env
+venv/
+*.pyc
+
+# Django
+staticfiles/
+media/
+db.sqlite3
+
+# ML models (regenerated on startup)
+backend/ml_model/saved/
+
+# Node / React
+frontend/node_modules/
+frontend/build/
+
+# Docker
+.dockerignore
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
