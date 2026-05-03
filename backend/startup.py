@@ -70,5 +70,3 @@ subprocess.run([sys.executable, "manage.py", "train_model"], check=False)
 
 print("\nStarting Django server...", flush=True)
 os.execvp(sys.executable, [sys.executable, "manage.py", "runserver", "0.0.0.0:8000"])
-
-dasdasdas
