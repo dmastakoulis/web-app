@@ -1,12 +1,32 @@
 import React, { useState } from 'react';
 import './index.css';
+import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Students from './pages/Students';
 import Predictor from './pages/Predictor';
 import PredictionLog from './pages/PredictionLog';
 
 export default function App() {
+  let initialAuth = false;
+  if (localStorage.getItem('auth') === 'true') {
+    initialAuth = true;
+  }
+  
   const [page, setPage] = useState('dashboard');
+  const [loggedIn, setLoggedIn] = useState(initialAuth);
+
+  const handleLogin = () => {
+    setLoggedIn(true);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('auth');
+    setLoggedIn(false);
+  };
+
+  if (!loggedIn) {
+    return <Login onLogin={handleLogin} />;
+  }
 
   const renderPage = () => {
     if (page === 'dashboard') {
@@ -49,34 +69,36 @@ export default function App() {
           <h1>Student Performance Predictor</h1>
         </div>
         <nav className="sidebar-nav">
-          <button 
-            className={dashboardClass} 
-            onClick={() => setPage('dashboard')}
-          >
+          <button className={dashboardClass} onClick={() => setPage('dashboard')}>
             Dashboard
           </button>
-          
-          <button 
-            className={studentsClass} 
-            onClick={() => setPage('students')}
-          >
+          <button className={studentsClass} onClick={() => setPage('students')}>
             Students
           </button>
-          
-          <button 
-            className={predictorClass} 
-            onClick={() => setPage('predictor')}
-          >
+          <button className={predictorClass} onClick={() => setPage('predictor')}>
             AI Predictor
           </button>
-          
-          <button 
-            className={logClass} 
-            onClick={() => setPage('log')}
-          >
+          <button className={logClass} onClick={() => setPage('log')}>
             Prediction Log
           </button>
         </nav>
+        <div style={{ padding: '16px', borderTop: '1px solid rgba(255,255,255,0.15)', position: 'absolute', bottom: 0, width: '100%' }}>
+          <button
+            onClick={handleLogout}
+            style={{
+              width: '100%',
+              padding: '8px',
+              background: 'rgba(255,255,255,0.15)',
+              color: 'white',
+              border: 'none',
+              borderRadius: 6,
+              fontSize: 13,
+              cursor: 'pointer',
+            }}
+          >
+            Sign Out
+          </button>
+        </div>
       </aside>
       <main className="main-content">
         {renderPage()}

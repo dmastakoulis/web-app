@@ -1,10 +1,8 @@
-"""
-startup.py — Waits for MySQL, runs migrations, seeds courses + 25 students, trains model, starts server.
-"""
 import os
 import sys
 import time
 import subprocess
+import MySQLdb
 
 host = os.environ.get("DB_HOST", "db")
 user = os.environ.get("DB_USER", "student_user")
@@ -14,7 +12,6 @@ port = int(os.environ.get("DB_PORT", 3306))
 
 print(f"[1/5] Waiting for MySQL at {host}:{port}...", flush=True)
 
-import MySQLdb
 for attempt in range(60):
     try:
         conn = MySQLdb.connect(host=host, user=user, passwd=password, db=name, port=port, connect_timeout=5)
@@ -58,6 +55,15 @@ for attempt in range(10):
 
 print("[4/5] Seeding courses and students...", flush=True)
 subprocess.run([sys.executable, "manage.py", "seed_courses"], check=False)
+
+print("      Setting up admin user...", flush=True)
+env = os.environ.copy()
+env["DJANGO_SUPERUSER_PASSWORD"] = "admin123"
+subprocess.run(
+    [sys.executable, "manage.py", "createsuperuser", "--noinput", "--username", "admin", "--email", "admin@university.edu"],
+    env=env,
+    check=False
+)
 
 print("[5/5] Training ML model...", flush=True)
 subprocess.run([sys.executable, "manage.py", "train_model"], check=False)
