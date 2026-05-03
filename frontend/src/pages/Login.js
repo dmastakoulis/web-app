@@ -157,10 +157,6 @@ export default function Login({ onLogin }) {
         >
           {buttonText}
         </button>
-
-        <p style={{ fontSize: 12, color: '#888', textAlign: 'center', marginTop: 20 }}>
-          AIN5301EN · 2025-2026
-        </p>
       </div>
     </div>
   );
